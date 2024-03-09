@@ -37,7 +37,8 @@ $ cd ~/catkin_ws & catkin_make_isolated -DCMAKE_BUILD_TYPE=Release
 $ mv mpl_ros ~/catkin_ws/src
 $ cd ~/catkin_ws
 $ catkin config -DCMAKE_BUILD_TYPE=Release
-$ catkin b
+$ catkin config -DCMAKE_CXX_STANDARD=14
+$ catkin build
 ```
 
 ## Example Usage
