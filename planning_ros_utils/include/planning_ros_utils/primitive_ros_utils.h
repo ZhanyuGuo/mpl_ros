@@ -10,7 +10,8 @@
 
 /// Primitive2D to primitive ROS message
 inline planning_ros_msgs::Primitive toPrimitiveROSMsg(const Primitive2D &pr,
-                                                      double z = 0) {
+                                                      double z = 0)
+{
   const auto cx = pr.pr(0).coeff();
   const auto cy = pr.pr(1).coeff();
   const auto cyaw = pr.pr_yaw().coeff();
@@ -21,7 +22,8 @@ inline planning_ros_msgs::Primitive toPrimitiveROSMsg(const Primitive2D &pr,
   msg.cy.resize(6);
   msg.cz.resize(6);
   msg.cyaw.resize(6);
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 6; i++)
+  {
     msg.cx[i] = cx(i);
     msg.cy[i] = cy(i);
     msg.cz[i] = cz(i);
@@ -33,7 +35,8 @@ inline planning_ros_msgs::Primitive toPrimitiveROSMsg(const Primitive2D &pr,
 }
 
 /// Primitive3D to primitive ROS message
-inline planning_ros_msgs::Primitive toPrimitiveROSMsg(const Primitive3D &pr) {
+inline planning_ros_msgs::Primitive toPrimitiveROSMsg(const Primitive3D &pr)
+{
   const auto cx = pr.pr(0).coeff();
   const auto cy = pr.pr(1).coeff();
   const auto cz = pr.pr(2).coeff();
@@ -43,7 +46,8 @@ inline planning_ros_msgs::Primitive toPrimitiveROSMsg(const Primitive3D &pr) {
   msg.cy.resize(6);
   msg.cz.resize(6);
   msg.cyaw.resize(6);
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 6; i++)
+  {
     msg.cx[i] = cx(i);
     msg.cy[i] = cy(i);
     msg.cz[i] = cz(i);
@@ -56,66 +60,79 @@ inline planning_ros_msgs::Primitive toPrimitiveROSMsg(const Primitive3D &pr) {
 
 /// Multiple Primitive2D to Primitive array ROS message
 inline planning_ros_msgs::PrimitiveArray toPrimitiveArrayROSMsg(
-    const vec_E<Primitive2D> &prs, double z = 0) {
+    const vec_E<Primitive2D> &prs, double z = 0)
+{
   planning_ros_msgs::PrimitiveArray msg;
-  for (const auto &pr : prs) msg.primitives.push_back(toPrimitiveROSMsg(pr, z));
+  for (const auto &pr : prs)
+    msg.primitives.push_back(toPrimitiveROSMsg(pr, z));
   return msg;
 }
 
 /// Multiple Primitive3D to Primitive array ROS message
 inline planning_ros_msgs::PrimitiveArray toPrimitiveArrayROSMsg(
-    const vec_E<Primitive3D> &prs) {
+    const vec_E<Primitive3D> &prs)
+{
   planning_ros_msgs::PrimitiveArray msg;
-  for (const auto &pr : prs) msg.primitives.push_back(toPrimitiveROSMsg(pr));
+  for (const auto &pr : prs)
+    msg.primitives.push_back(toPrimitiveROSMsg(pr));
   return msg;
 }
 
 /// Trajectory2D class to trajectory ROS message
 inline planning_ros_msgs::Trajectory toTrajectoryROSMsg(
-    const Trajectory2D &traj, double z = 0) {
+    const Trajectory2D &traj, double z = 0)
+{
   planning_ros_msgs::Trajectory msg;
   for (const auto &seg : traj.segs)
     msg.primitives.push_back(toPrimitiveROSMsg(seg, z));
 
-  if (traj.lambda().exist()) {
+  if (traj.lambda().exist())
+  {
     auto l = traj.lambda();
     msg.lambda.resize(l.segs.size());
-    for (int i = 0; i < (int)l.segs.size(); i++) {
+    for (int i = 0; i < (int)l.segs.size(); i++)
+    {
       msg.lambda[i].dT = l.segs[i].dT;
       msg.lambda[i].ti = l.segs[i].ti;
       msg.lambda[i].tf = l.segs[i].tf;
       msg.lambda[i].ca.resize(4);
-      for (int j = 0; j < 4; j++) msg.lambda[i].ca[j] = l.segs[i].a(j);
+      for (int j = 0; j < 4; j++)
+        msg.lambda[i].ca[j] = l.segs[i].a(j);
     }
   }
   return msg;
 }
 
 /// Trajectory3D class to trajectory ROS message
-inline planning_ros_msgs::Trajectory toTrajectoryROSMsg(
-    const Trajectory3D &traj) {
+inline planning_ros_msgs::Trajectory toTrajectoryROSMsg(const Trajectory3D &traj)
+{
   planning_ros_msgs::Trajectory msg;
   for (const auto &seg : traj.segs)
     msg.primitives.push_back(toPrimitiveROSMsg(seg));
 
-  if (traj.lambda().exist()) {
+  if (traj.lambda().exist())
+  {
     auto l = traj.lambda();
     msg.lambda.resize(l.segs.size());
-    for (int i = 0; i < (int)l.segs.size(); i++) {
+    for (int i = 0; i < (int)l.segs.size(); i++)
+    {
       msg.lambda[i].dT = l.segs[i].dT;
       msg.lambda[i].ti = l.segs[i].ti;
       msg.lambda[i].tf = l.segs[i].tf;
       msg.lambda[i].ca.resize(4);
-      for (int j = 0; j < 4; j++) msg.lambda[i].ca[j] = l.segs[i].a(j);
+      for (int j = 0; j < 4; j++)
+        msg.lambda[i].ca[j] = l.segs[i].a(j);
     }
   }
   return msg;
 }
 
 /// ROS message to Primitive2D class
-inline Primitive2D toPrimitive2D(const planning_ros_msgs::Primitive &pr) {
+inline Primitive2D toPrimitive2D(const planning_ros_msgs::Primitive &pr)
+{
   Vec6f cx, cy, cyaw;
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 6; i++)
+  {
     cx(i) = pr.cx[i];
     cy(i) = pr.cy[i];
     cyaw(i) = pr.cyaw[i];
@@ -129,9 +146,11 @@ inline Primitive2D toPrimitive2D(const planning_ros_msgs::Primitive &pr) {
 }
 
 /// ROS message to Primitive3D class
-inline Primitive3D toPrimitive3D(const planning_ros_msgs::Primitive &pr) {
+inline Primitive3D toPrimitive3D(const planning_ros_msgs::Primitive &pr)
+{
   Vec6f cx, cy, cz, cyaw;
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 6; i++)
+  {
     cx(i) = pr.cx[i];
     cy(i) = pr.cy[i];
     cz(i) = pr.cz[i];
@@ -148,18 +167,22 @@ inline Primitive3D toPrimitive3D(const planning_ros_msgs::Primitive &pr) {
 
 /// ROS message to Trajectory2D class
 inline Trajectory2D toTrajectory2D(
-    const planning_ros_msgs::Trajectory &traj_msg) {
+    const planning_ros_msgs::Trajectory &traj_msg)
+{
   // Constructor from ros msg
   Trajectory2D traj;
   traj.taus.push_back(0);
-  for (const auto &it : traj_msg.primitives) {
+  for (const auto &it : traj_msg.primitives)
+  {
     traj.segs.push_back(toPrimitive2D(it));
     traj.taus.push_back(traj.taus.back() + it.t);
   }
 
-  if (!traj_msg.lambda.empty()) {
+  if (!traj_msg.lambda.empty())
+  {
     Lambda l;
-    for (int i = 0; i < (int)traj_msg.lambda.size(); i++) {
+    for (int i = 0; i < (int)traj_msg.lambda.size(); i++)
+    {
       LambdaSeg seg;
       seg.a(0) = traj_msg.lambda[i].ca[0];
       seg.a(1) = traj_msg.lambda[i].ca[1];
@@ -173,26 +196,32 @@ inline Trajectory2D toTrajectory2D(
     }
     traj.lambda_ = l;
     std::vector<decimal_t> ts;
-    for (const auto &tau : traj.taus) ts.push_back(traj.lambda_.getT(tau));
+    for (const auto &tau : traj.taus)
+      ts.push_back(traj.lambda_.getT(tau));
     traj.Ts = ts;
-  } else
+  }
+  else
     traj.total_t_ = traj.taus.back();
   return traj;
 }
 
 /// ROS message to Trajectory3D class
 inline Trajectory3D toTrajectory3D(
-    const planning_ros_msgs::Trajectory &traj_msg) {
+    const planning_ros_msgs::Trajectory &traj_msg)
+{
   Trajectory3D traj;
   traj.taus.push_back(0);
-  for (const auto &it : traj_msg.primitives) {
+  for (const auto &it : traj_msg.primitives)
+  {
     traj.segs.push_back(toPrimitive3D(it));
     traj.taus.push_back(traj.taus.back() + it.t);
   }
 
-  if (!traj_msg.lambda.empty()) {
+  if (!traj_msg.lambda.empty())
+  {
     Lambda l;
-    for (int i = 0; i < (int)traj_msg.lambda.size(); i++) {
+    for (int i = 0; i < (int)traj_msg.lambda.size(); i++)
+    {
       LambdaSeg seg;
       seg.a(0) = traj_msg.lambda[i].ca[0];
       seg.a(1) = traj_msg.lambda[i].ca[1];
@@ -206,9 +235,11 @@ inline Trajectory3D toTrajectory3D(
     }
     traj.lambda_ = l;
     std::vector<decimal_t> ts;
-    for (const auto &tau : traj.taus) ts.push_back(traj.lambda_.getT(tau));
+    for (const auto &tau : traj.taus)
+      ts.push_back(traj.lambda_.getT(tau));
     traj.Ts = ts;
-  } else
+  }
+  else
     traj.total_t_ = traj.taus.back();
   return traj;
 }
